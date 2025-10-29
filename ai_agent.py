@@ -5,15 +5,42 @@
 from langchain_openai import ChatOpenAI
 from langchain_groq import ChatGroq
 from langgraph.prebuilt import create_react_agent
-from langchain_community.tools.ddg_search import DuckDuckGoSearchRun
+try:
+    from langchain_community.tools.ddg_search import DuckDuckGoSearchRun
+except Exception:
+    # Import may fail in some environments if the underlying dependency
+    # (duckduckgo-search) isn't installed. We'll handle initialization
+    # lazily so the module import doesn't crash the app during startup.
+    DuckDuckGoSearchRun = None
 from dotenv import load_dotenv
 import os
 
 # Load environment variables
 load_dotenv()
 
-# Step 1: Initialize the Search Tool (✅ updated version)
-search_tool = DuckDuckGoSearchRun(name="duckduckgo_search")
+# Lazy search tool initializer. Some hosting environments (like Streamlit
+# Cloud) may not have the optional `duckduckgo-search` dependency installed
+# at import-time. We create the tool only when a request asks for web search.
+search_tool = None
+
+def get_search_tool():
+    """Return a DuckDuckGoSearchRun instance or None if unavailable.
+
+    This is lazy and will catch initialization errors so imports don't fail.
+    """
+    global search_tool
+    if search_tool is not None:
+        return search_tool
+    if DuckDuckGoSearchRun is None:
+        return None
+    try:
+        search_tool = DuckDuckGoSearchRun(name="duckduckgo_search")
+        return search_tool
+    except Exception as e:
+        # Don't raise here — return None and allow the agent to run without search.
+        print(f"Warning: DuckDuckGoSearchRun unavailable: {e}")
+        search_tool = None
+        return None
 
 # Step 2: Main function to handle AI responses
 def get_response_from_ai_agent(model_name, query, allow_search, system_prompt, provider):
@@ -31,8 +58,12 @@ def get_response_from_ai_agent(model_name, query, allow_search, system_prompt, p
     else:
         raise ValueError("Invalid provider! Please choose 'OpenAI' or 'Groq'.")
 
-    # Step 3: Decide tools based on allow_search
-    tools = [search_tool] if allow_search else []
+    # Step 3: Decide tools based on allow_search (create lazily)
+    tools = []
+    if allow_search:
+        ddg = get_search_tool()
+        if ddg is not None:
+            tools.append(ddg)
 
     # Step 4: Create the LangGraph ReAct Agent
     agent = create_react_agent(llm, tools)
