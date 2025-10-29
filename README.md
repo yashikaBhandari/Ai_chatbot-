@@ -1,186 +1,115 @@
-# 🤖  AI  Chatbot Agent
+# 🤖 AI Chatbot Agent
 
-A powerful AI chatbot application that combines FastAPI, Streamlit, and LangGraph to create an interactive AI agent with web search capabilities. The application supports multiple AI models from providers like OpenAI and Groq.
+A powerful AI chatbot application built with FastAPI, Streamlit, and LangGraph. Features real-time web search capabilities and supports both OpenAI and Groq models.
 
 ## 🌟 Features
 
-- 🎯 Multiple AI model support (OpenAI and Groq)
-- 🔍 Web search integration using DuckDuckGo
-- 🎨 Clean and intuitive Streamlit UI
-- 🚀 Fast and efficient FastAPI backend
-- 💡 Customizable system prompts
-- ⚡ Real-time responses
-- 🛡️ Error handling and input validation
+- Multiple AI model support (OpenAI and Groq)
+- Web search integration
+- Clean Streamlit UI
+- FastAPI backend
+- Customizable system prompts
+- Real-time responses
 
-## 📋 Prerequisites
-
-- Python 3.8+
-- pip (Python package manager)
-- OpenAI API key (for OpenAI models)
-- Groq API key (for Groq models)
-
-## 🔧 Installation
+## � Quick Start
 
 1. **Clone the repository**
 ```bash
-git clone <repository-url>
-cd langraph_agent
+git clone https://github.com/yashikaBhandari/Ai_chatbot-.git
+cd Ai_chatbot-
 ```
 
-2. **Set up a virtual environment**
+2. **Set up virtual environment**
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
 3. **Install dependencies**
 ```bash
-pip install fastapi uvicorn python-dotenv langchain-openai langchain-groq langgraph langchain-community streamlit requests
+pip install -r requirements.txt
 ```
 
-4. **Configure environment variables**
+4. **Set up environment variables**
 Create a `.env` file in the project root:
 ```env
-OPENAI_API_KEY=your_openai_api_key_here
-GROQ_API_KEY=your_groq_api_key_here
+OPENAI_API_KEY=your_openai_api_key
+GROQ_API_KEY=your_groq_api_key
 ```
 
-## 🚀 Running the Application
+5. **Run the application**
 
-1. **Start the backend server**
+In one terminal (Backend):
 ```bash
 python backend.py
 ```
-The backend will run on http://localhost:9999
 
-2. **Start the frontend (in a new terminal)**
+In another terminal (Frontend):
 ```bash
 streamlit run frontend.py
 ```
-The frontend will be accessible at http://localhost:8501
+
+Visit http://localhost:8501 in your browser.
 
 ## 💻 Usage
 
-1. **Access the web interface**
-   - Open your browser and go to http://localhost:8501
-
-2. **Configure your AI Agent**
-   - Enter a system prompt (optional)
-   - Select your preferred AI provider (OpenAI or Groq)
-   - Choose a specific model from the dropdown
-   - Enable/disable web search functionality
-
-3. **Start chatting**
-   - Enter your query in the text area
-   - Click "🚀 Ask Agent!" to get a response
-   - View the formatted response in the UI
+1. Open http://localhost:8501
+2. Define your AI agent's behavior using the system prompt
+3. Choose your provider (Groq or OpenAI)
+4. Select a model:
+   - Groq: llama-3.3-70b-versatile or mixtral-8x7b-32768
+   - OpenAI: gpt-4o-mini
+5. Enable web search if needed
+6. Enter your query and click "Ask Agent!"
 
 ## 📁 Project Structure
 
 ```
-langraph_agent/
-├── frontend.py      # Streamlit UI implementation
-├── backend.py       # FastAPI server implementation
-├── ai_agent.py      # AI agent logic and LangGraph integration
-├── .env            # Environment variables (create this)
-└── README.md       # Project documentation
+Ai_chatbot-/
+├── frontend.py    # Streamlit UI
+├── backend.py     # FastAPI server
+├── ai_agent.py    # AI agent logic
+├── .env          # Environment variables (create this)
+└── README.md     # Documentation
 ```
 
-## 🔐 Supported Models
+## ⚙️ Environment Variables
 
-### Groq Models
-- llama-3.3-70b-versatile
-- mixtral-8x7b-32768
+Required environment variables in your `.env` file:
 
-### OpenAI Models
-- gpt-4o-mini
+```env
+GROQ_API_KEY=your_groq_api_key
+OPENAI_API_KEY=your_openai_api_key
+```
 
-## ⚙️ Configuration Options
+## 🔧 Development
 
-- **System Prompt**: Custom instructions for the AI agent
-- **Model Selection**: Choose between different AI models
-- **Provider Selection**: Switch between OpenAI and Groq
-- **Web Search**: Toggle DuckDuckGo search integration
+- Backend runs on http://localhost:9999
+- Frontend runs on http://localhost:8501
+- Uses FastAPI for API endpoints
+- Streamlit for user interface
+- LangGraph for AI agent functionality
 
-## 🛟 Troubleshooting
+## �️ Troubleshooting
 
-1. **API Key Errors**
-   - Ensure your API keys are correctly set in the `.env` file
-   - Verify the API keys are valid and have sufficient credits
+1. **Port already in use**
+```bash
+# Find the process
+lsof -nP -iTCP:9999 -sTCP:LISTEN
+# Kill the process
+kill <PID>
+```
 
-2. **Connection Issues**
-   - Check if both backend and frontend servers are running
-   - Verify the correct ports (9999 for backend, 8501 for frontend) are available
+2. **API Key Issues**
+- Ensure your `.env` file exists and contains valid API keys
+- Verify the API keys have sufficient credits
 
-3. **Package Issues**
-   - Make sure all dependencies are installed correctly
-   - Use the virtual environment when running the application
+3. **Dependencies**
+- Make sure to activate the virtual environment
+- Install all requirements: `pip install -r requirements.txt`
 
 ## 📝 Notes
 
-- The backend uses FastAPI for efficient API handling
-- Web search is performed using DuckDuckGo
-- The frontend is built with Streamlit for easy interaction
-- Error handling is implemented throughout the application
-
-## 🔒 Security
-
-- API keys are managed through environment variables
-- Input validation is implemented on both frontend and backend
-- Model names are validated against an allowed list
-
-## 🤝 Contributing
-
-Feel free to:
-- Submit bug reports
-- Propose new features
-- Submit pull requests
-
-## 🌐 Deployment
-
-This project is deployed using [Streamlit Cloud](https://streamlit.io/cloud). The application runs as a single service with integrated AI functionality.
-
-### Deployment Files
-
-1. **requirements.txt**: All Python dependencies with specific versions
-2. **.streamlit/secrets.toml**: Configuration for API keys (create from .env.example)
-3. **frontend.py**: Main Streamlit application
-
-### Deployment Steps
-
-1. **Prepare for Deployment**
-   - Ensure all files are committed to GitHub
-   - Create a free account on [Streamlit Cloud](https://streamlit.io/cloud)
-   - Create `.streamlit/secrets.toml` with your API keys (don't commit this file)
-
-2. **Deploy on Streamlit Cloud**
-   - Connect your GitHub repository
-   - Select the `frontend.py` file
-   - Add your secrets in the Streamlit Cloud dashboard:
-     - `OPENAI_API_KEY`
-     - `GROQ_API_KEY`
-   - Deploy the application
-
-3. **Post Deployment**
-   - Your app will be available at `https://your-app-name.streamlit.app`
-   - Test the application thoroughly
-   - Share the URL with others
-
-### Environment Variables
-
-```env
-OPENAI_API_KEY=your_openai_api_key_here
-GROQ_API_KEY=your_groq_api_key_here
-BACKEND_URL=your_backend_url_here  # Required for deployed frontend
-```
-
-### Deployment Considerations
-
-- Free tier limitations on Render
-- Service spin-down after 15 minutes of inactivity
-- Initial cold start might be slow
-- Monitor usage and logs in Render dashboard
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- Keep your API keys secure and never commit them to the repository
+- The `.env` file is included in `.gitignore`
+- When using web search, ensure you have a stable internet connection
