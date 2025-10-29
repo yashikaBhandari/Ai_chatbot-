@@ -1,0 +1,7 @@
+streamlit>=1.28.1
+langchain-openai>=0.0.2
+langchain-groq>=0.0.1
+langgraph>=0.0.20
+langchain-community>=0.0.10
+requests>=2.31.0
+python-dotenv>=1.0.0
