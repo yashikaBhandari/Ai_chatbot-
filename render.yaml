@@ -1,0 +1,62 @@
+services:services:services:
+
+  # Backend API service
+
+  - type: web  # Backend API service  - type: web
+
+    name: langraph-agent-api
+
+    env: python  - type: web    name: langraph-backend
+
+    buildCommand: pip install -r requirements.txt
+
+    startCommand: python backend.py    name: langraph-agent-api    env: python
+
+    envVars:
+
+      - key: PYTHON_VERSION    env: python    buildCommand: pip install -r requirements.txt
+
+        value: 3.9
+
+      - key: PORT    buildCommand: pip install -r requirements.txt    startCommand: uvicorn backend:app --host 0.0.0.0 --port $PORT
+
+        value: 10000
+
+    startCommand: python backend.py    envVars:
+
+  # Frontend Streamlit service
+
+  - type: web    envVars:      - key: OPENAI_API_KEY
+
+    name: langraph-agent-frontend
+
+    env: python      - key: PYTHON_VERSION        sync: false
+
+    buildCommand: pip install -r requirements.txt
+
+    startCommand: streamlit run frontend.py        value: 3.9      - key: GROQ_API_KEY
+
+    envVars:
+
+      - key: PYTHON_VERSION        sync: false
+
+        value: 3.9
+
+      - key: PORT  # Frontend Streamlit service
+
+        value: 8501
+  - type: web  - type: web
+
+    name: langraph-agent-frontend    name: langraph-frontend
+
+    env: python    env: python
+
+    buildCommand: pip install -r requirements.txt    buildCommand: pip install -r requirements.txt
+
+    startCommand: streamlit run frontend.py    startCommand: streamlit run frontend.py --server.port $PORT
+
+    envVars:    envVars:
+
+      - key: PYTHON_VERSION      - key: BACKEND_URL
+
+        value: 3.9        value: https://langraph-backend.onrender.com

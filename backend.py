@@ -1,5 +1,5 @@
 # ===============================
-# 🌐 LangGraph AI Agent Backend (restored)
+# 🌐 LangGraph AI Agent Backend
 # ===============================
 
 from fastapi import FastAPI
@@ -8,19 +8,19 @@ from typing import List
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from .env file
+# Load environment variables
 load_dotenv()
 
-# Import the function that talks to AI model
+# Import AI agent function
 from ai_agent import get_response_from_ai_agent
 
 
 class RequestState(BaseModel):
-    model_name: str
-    model_provider: str
-    system_prompt: str = ""
-    messages: List[str]
-    allow_search: bool = False
+    model_name: str           # e.g. "gpt-4o-mini" or "llama3-70b-8192"
+    model_provider: str       # e.g. "openai" or "groq"
+    system_prompt: str = ""   # Optional: system-level instruction
+    messages: List[str]       # Chat history or query messages
+    allow_search: bool = False    # Whether search tools are enabled
 
 
 ALLOWED_MODEL_NAMES = [
@@ -60,8 +60,8 @@ def chat_endpoint(request: RequestState):
 
 if __name__ == "__main__":
     import uvicorn
-
-    uvicorn.run(app, host="127.0.0.1", port=9999)
+    port = int(os.getenv("PORT", 9999))
+    uvicorn.run(app, host="0.0.0.0", port=port)
 # ===============================
 # 🌐 LangGraph AI Agent Backend
 # ===============================
@@ -131,4 +131,5 @@ def chat_endpoint(request: RequestState):
 # Step 7: Run app (for development)
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=9999)
+    port = int(os.getenv("PORT", 9999))
+    uvicorn.run(app, host="0.0.0.0", port=port)
