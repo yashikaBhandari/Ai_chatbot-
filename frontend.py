@@ -86,7 +86,7 @@ allow_web_search = st.checkbox("Allow Web Search")
 
 user_query = st.text_area("💬 Enter your query:", height=150, placeholder="Ask Anything!")
 
-API_URL = "http://127.0.0.1:9999/chat"
+API_URL = "https://ai-chatbot-j2yt.onrender.com"
 
 # Step 3: Button for sending request
 if st.button("🚀 Ask Agent!"):
